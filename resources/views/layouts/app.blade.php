@@ -21,7 +21,7 @@
             <a href="#" id="production-menu"><i data-feather="menu"></i></a>
         </div>
     </nav>
-    <!-- Akhir Navbar -->
+    <!--Akhir Navbar-->
 
     <main>
         @yield('content')
