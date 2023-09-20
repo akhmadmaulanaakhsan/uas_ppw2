@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\BukuController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,3 +26,5 @@ Route::get('/about', function () {
 
 
 Route::get('/inihome',[PostController::class,'panggilhome']);
+
+Route::get('/buku',[BukuController::class,'index']);
