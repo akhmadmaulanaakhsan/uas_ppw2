@@ -1,0 +1,141 @@
+/* Reset beberapa gaya default */
+body,
+h1,
+button,
+table {
+    margin: 0;
+    padding: 0;
+}
+
+/* CSS untuk tampilan halaman */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin-left: 30px;
+    margin-right: 30px;
+}
+
+.container {
+    max-width: 800px;
+    width: 100%;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 20px;
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+    padding: 20px 0;
+}
+
+.tambah-button {
+    background-color: #4caf50;
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    border: none;
+    border-radius: 5px;
+    margin: 10px 0;
+    display: inline-block;
+    width: 120px;
+    transition: background-color 0.3s ease, color 0.3s ease; /* Efek transisi */
+}
+
+.tambah-button:hover {
+    background-color: #6a806b; /* Warna latar belakang saat dihover */
+    color: #ffffff; /* Warna teks saat dihover */
+}
+
+.tambah-button a {
+    color: white;
+    text-decoration: none;
+}
+
+.hapus-button {
+    background-color: #871202;
+    color: white;
+    text-decoration: none;
+    border: none;
+    border-radius: 5px;
+    margin: 5px 0;
+    display: inline-block;
+    width: 70px;
+    height: 30px;
+    transition: background-color 0.3s ease, color 0.3s ease; /* Efek transisi */
+}
+
+.hapus-button:hover {
+    background-color: #532e2a; /* Warna latar belakang saat dihover */
+    color: #ffffff; /* Warna teks saat dihover */
+}
+
+.update-button {
+    background-color: #026187;
+    color: white;
+    text-decoration: none;
+    border: none;
+    border-radius: 5px;
+    margin: 5px 0;
+    display: inline-block;
+    width: 70px;
+    height: 30px;
+    transition: background-color 0.3s ease, color 0.3s ease; /* Efek transisi */
+}
+
+.update-button:hover {
+    background-color: #3b5f6d; /* Warna latar belakang saat dihover */
+    color: #ffffff; /* Warna teks saat dihover */
+}
+
+.update-button,
+.hapus-button {
+    margin: 0 8px; /* Atur margin kiri dan kanan di sini */
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+table,
+th,
+td {
+    border: 1px solid #ddd;
+}
+
+th,
+td {
+    padding: 12px;
+    text-align: left;
+}
+
+th {
+    background-color: #333;
+    color: white;
+}
+
+tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+tbody tr:hover {
+    background-color: #ddd;
+}
+
+th.aksi-buku {
+    width: 180px; /* Sesuaikan dengan lebar yang Anda inginkan */
+}
+
+p {
+    margin: 10px 0;
+    color: #333;
+    text-align: left;
+}
