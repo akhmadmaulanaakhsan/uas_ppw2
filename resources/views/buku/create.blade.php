@@ -1,4 +1,4 @@
-@extends('layouts.layout')
+@extends('layouts.master')
 
 <!DOCTYPE html>
 <html lang="en">
@@ -12,6 +12,13 @@
     @section('content')
         <div class="container">
             <h4>Tambah Buku</h4>
+            @if(count($errors)>0)
+                <ul class="alert alert-danger">
+                    @foreach($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            @endif
             <form method="post" action="{{ route('buku.store') }}">
             @csrf
                 <div class="form-group">
@@ -28,7 +35,7 @@
                 </div>
                 <div class="form-group">
                     <label for="tgl_terbit">Tgl. Terbit:</label>
-                    <input type="text" id="tgl_terbit" name="tgl_terbit">
+                    <input type="date" id="tgl_terbit" name="tgl_terbit" class="date form-control" placeholder="yyyy/mm/dd">
                 </div>
                 <div class="button-group">
                     <button type="submit">Tambah</button>

@@ -1,4 +1,4 @@
-@extends('layouts.layout')
+@extends('layouts.master')
 
 <!DOCTYPE html>
 <html lang="en">
@@ -26,9 +26,9 @@
                 <label for="harga">Harga:</label>
                 <input type="text" id="harga" name="harga" value="{{ $buku->harga }}">
             </div>
-            <div class="form-group">
+            <div>
                 <label for="tgl_terbit">Tgl. Terbit:</label>
-                <input type="text" id="tgl_terbit" name="tgl_terbit" value="{{ $buku->tgl_terbit }}">
+                <input type="datess" id="tgl_terbit" name="tgl_terbit" class="date form-control" value="{{ $buku->tgl_terbit }}">
             </div>
             <div class="button-group">
                 <button type="submit">Update</button>
