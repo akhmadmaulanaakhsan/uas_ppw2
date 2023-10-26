@@ -27,9 +27,9 @@ class BukuController extends Controller
         //$data_buku = Buku::all()->sortByDesc('id');
         $jumlahData = Buku::count();
         $totalHarga = Buku::sum('harga');
-        $data_buku = Buku::where('judul', 'like',"&".$cari."%")->orwhere('penulis','like',"%".$cari."%")->paginate($batas);
+        $data_buku = Buku::where('judul', 'like',"%".$cari."%")->orwhere('penulis','like',"%".$cari."%")->paginate($batas);
         $nomor = $batas * ($data_buku->currentPage()-1);
-        return view('buku.search', compact('data_buku','no','nomor','jumlahData','totalHarga'));
+        return view('buku.search', compact('data_buku','no','nomor','jumlahData','totalHarga', 'cari'));
     }
 
     public function create(){
