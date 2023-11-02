@@ -2,6 +2,8 @@
 
 use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Http\Request;
+use App\Http\Controllers\PostController;
+use App\Http\Controllers\BukuController;
 
 define('LARAVEL_START', microtime(true));
 

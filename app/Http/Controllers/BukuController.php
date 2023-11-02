@@ -6,22 +6,23 @@ use Illuminate\Http\Request;
 use App\Models\Buku;
 class BukuController extends Controller
 {
+    
     //fungsi index
     public function index(){
-        $data_buku = Buku::all();
-        $batas = 10;
+        //$data_buku = Buku::all();
+        $batas = 5;
         $no = 0;
         //$data_buku = Buku::all()->sortByDesc('id');
         $jumlahData = Buku::count();
         $totalHarga = Buku::sum('harga');
         $data_buku = Buku::orderBy('id', 'desc')->paginate($batas);
         $nomor = $batas * ($data_buku->currentPage()-1);
-        return view('buku.index', compact('data_buku','no','nomor','jumlahData','totalHarga'));
+        return view('dashboard', compact('data_buku','no','nomor','jumlahData','totalHarga'));
     }
 
     public function search(Request $request){
-        $data_buku = Buku::all();
-        $batas = 10;
+        //$data_buku = Buku::all();
+        $batas = 5;
         $cari = $request-> kata;
         $no = 0;
         //$data_buku = Buku::all()->sortByDesc('id');
@@ -29,7 +30,7 @@ class BukuController extends Controller
         $totalHarga = Buku::sum('harga');
         $data_buku = Buku::where('judul', 'like',"%".$cari."%")->orwhere('penulis','like',"%".$cari."%")->paginate($batas);
         $nomor = $batas * ($data_buku->currentPage()-1);
-        return view('buku.search', compact('data_buku','no','nomor','jumlahData','totalHarga', 'cari'));
+        return view('dashboard', compact('data_buku','no','nomor','jumlahData','totalHarga', 'cari'));
     }
 
     public function create(){

@@ -125,7 +125,6 @@
         <p>Jumlah data buku: {{ $jumlahData }}</p> 
         <p>Jumlah total harga semua buku: Rp {{ number_format($totalHarga, 0, ',', '.') }}</p>
         <div>{{ $data_buku->links() }}</div>
-        <div><strong>Jumlah Buku: {{ $jumlahData }}</strong></div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
