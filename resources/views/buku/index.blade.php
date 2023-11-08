@@ -87,8 +87,9 @@
             <input type="text" name="kata" class="form-control" placeholder="Cari ..." style="width: 30%;
                 display: inline; margin-bottom: 10px; float: right;">
         </form>
+        @if(Auth::check() && Auth::user()->level == 'admin')
         <a href="{{ route('buku.create') }}" class="btn btn-success mb-2">Tambah Buku</a>
-    
+        @endif
         <table class="table table-striped">
             <thead>
                 <tr>
@@ -97,7 +98,9 @@
                     <th>Penulis</th>
                     <th>Harga</th>
                     <th>Tgl. Terbit</th>
+                    @if(Auth::check() && Auth::user()->level == 'admin')
                     <th class="aksi-buku">Aksi</th>
+                    @endif
                 </tr>
             </thead>
             <tbody>
@@ -108,6 +111,7 @@
                         <td>{{ $buku->penulis }}</td>
                         <td>{{ number_format($buku->harga, 0, ',', '.') }}</td>
                         <td>{{ $buku->tgl_terbit->format('d/m/Y') }}</td>
+                        @if(Auth::check() && Auth::user()->level == 'admin')
                         <td>
                             <form method="put" action="{{ route('buku.edit', $buku->id) }}" style="display: inline;">
                                 @csrf
@@ -118,6 +122,7 @@
                                 <button onClick="return confirm('Yakin mau dihapus?')" class="btn btn-danger">Hapus</button>
                             </form>
                         </td>
+                        @endif
                     </tr>
                 @endforeach
             </tbody>
