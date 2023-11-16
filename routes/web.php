@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\BukuController;
+use App\Http\Middleware\Admin;
 
 /*
 |--------------------------------------------------------------------------
@@ -48,6 +49,7 @@ Route::middleware([Admin::class])->group(function () {
   Route::put('/buku/update/{id}', [BukuController::class, 'update'])->name('buku.update');
   Route::get('/buku/create',[BukuController::class, 'create'])->name('buku.create');
   Route::post('/buku',[BukuController::class, 'store'])->name('buku.store');
+  Route::post('/buku/update/{id}',[BukuController::class, 'update'])->name('buku.update');
 
 });
 

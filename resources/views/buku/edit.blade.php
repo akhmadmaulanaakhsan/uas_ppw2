@@ -11,7 +11,7 @@
 <body>
     <div class="container">
         <h4>Update Buku</h4>
-        <form method="post" action="{{ route('buku.update', $buku->id) }}">
+        <form method="post" action="{{ route('buku.update', $buku->id) }}" enctype="multipart/form-data">
             @csrf
             @method('PUT')
             <div class="form-group">
@@ -28,9 +28,46 @@
             </div>
             <div>
                 <label for="tgl_terbit">Tgl. Terbit:</label>
-                <input type="datess" id="tgl_terbit" name="tgl_terbit" class="date form-control" value="{{ $buku->tgl_terbit }}">
+                <input type="date" id="tgl_terbit" name="tgl_terbit" class="date form-control" value="{{ $buku->tgl_terbit }}">
             </div>
+            <div class="form-group">
+                <label for="thumbnail">Thumbnail:</label>
+                <br>
+                <input type="file" name="thumbnail" id="thumbnail" >
+            </div>
+
+            <div class="form-group">
+                <label for="gallery">Gallery:</label>
+                <br>
+                <input type="file" name="gallery[]" id="gallery" >
+            </div>
+            <div class="form-group">
+                <div class="mt-2" id="fileinput_wrapper">
+                </div>
+                <a href="javascript:void(0);" id="tambah" onclick="addFileInput()">Tambah Gallery</a>
+                <script type="text/javascript">
+                    function addFileInput () {
+                        var div = document.getElementById('fileinput_wrapper');
+                        div.innerHTML += '<input type="file" name="gallery[]" id="gallery" class="block w-full mb-5" style="margin-bottom:5px;">';
+                    };
+                </script>
+            </div>
+            <div class="gallery_items" style="display: flex;">
+                @foreach($buku->galleries()->get() as $gallery)
+                    <div class="gallery_item" style="margin-right: 10px;">
+                        <img
+                        class="rounded-full object-cover object-center"
+                        src="{{ asset($gallery->path) }}"
+                        alt=""
+                        width="300"
+                        />
+                    </div>
+                @endforeach
+            </div>
+
+    
             <div class="button-group">
+            <br>
                 <button type="submit">Update</button>
                 <a href="/buku" class="cancel-link">Batal</a>
             </div>

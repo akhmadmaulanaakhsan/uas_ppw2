@@ -19,7 +19,7 @@
                     @endforeach
                 </ul>
             @endif
-            <form method="post" action="{{ route('buku.store') }}">
+            <form method="post" action="{{ route('buku.store') }}" enctype="multipart/form-data">
             @csrf
                 <div class="form-group">
                     <label for="judul">Judul:</label>
@@ -37,7 +37,14 @@
                     <label for="tgl_terbit">Tgl. Terbit:</label>
                     <input type="date" id="tgl_terbit" name="tgl_terbit" class="date form-control" placeholder="yyyy/mm/dd">
                 </div>
+                <div class="form-group">
+                    <label for="thumbnail">Thumbnail:</label>
+                    <br>
+                    <input type="file" name="thumbnail" id="thumbnail" >
+                </div>
+                
                 <div class="button-group">
+                    <br>
                     <button type="submit">Tambah</button>
                     <a href="/buku" class="cancel-link">Batal</a>
                 </div>

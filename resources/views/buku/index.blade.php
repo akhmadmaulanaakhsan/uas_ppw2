@@ -19,12 +19,12 @@
             text-align: center;
             font-size: 16px; 
             padding: 12px; 
-            border: 1px solid #dee2e6; 
+            border: 2px solid #dee2e6; 
         }
 
         td {
             font-size: 14px; 
-            border: 1px solid #dee2e6; 
+            border: 2px solid #dee2e6; 
             padding: 10px; 
         }
 
@@ -39,7 +39,7 @@
         .table {
             border: 1px solid #dee2e6; 
             border-radius: 10px;
-            overflow: hidden; 
+            overflow: hidden;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
         }
 
@@ -94,6 +94,7 @@
             <thead>
                 <tr>
                     <th>id</th>
+                    <th>Gambar Buku</th>
                     <th>Judul Buku</th>
                     <th>Penulis</th>
                     <th>Harga</th>
@@ -107,6 +108,17 @@
                 @foreach($data_buku as $buku)
                     <tr>
                         <td>{{ $buku->id }}</td>
+                        @if ( $buku->filepath )
+                        <td>
+                            <div class="relative h-100 w-50">
+                                <img 
+                                class="h-full w-full object-cover object-center"
+                                src="{{ asset($buku->filepath) }}"
+                                alt=""
+                                />
+                            </div>
+                        </td>
+                        @endif
                         <td>{{ $buku->judul }}</td>
                         <td>{{ $buku->penulis }}</td>
                         <td>{{ number_format($buku->harga, 0, ',', '.') }}</td>
@@ -117,6 +129,8 @@
                                 @csrf
                                 <button type="submit" class="btn btn-primary">Update</button>
                             </form>
+                            <br>
+                            <br>
                             <form action="{{ route('buku.destroy', $buku->id) }}" method="post" style="display: inline;">
                                 @csrf
                                 <button onClick="return confirm('Yakin mau dihapus?')" class="btn btn-danger">Hapus</button>
