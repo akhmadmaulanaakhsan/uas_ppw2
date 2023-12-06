@@ -48,33 +48,41 @@ class BukuController extends Controller
             'thumbnail' => 'image|mimes:jpeg,jpg,png|max:2048'
         ]);
 
-        if ($request->hasFile('thumbnail')) {
+        if ($request->file('thumbnail')) {
             $fileName = time().'_'.$request->thumbnail->getClientOriginalName();
             $filePath = $request->file('thumbnail')->storeAs('uploads', $fileName, 'public');
     
             Image::make(storage_path() . '/app/public/uploads/' . $fileName)
                 ->fit(240, 320)
                 ->save();
-    
-            // Simpan informasi buku ke database
-            Buku::create([
-                'judul' => $request->judul,
-                'penulis' => $request->penulis,
-                'harga' => $request->harga,
-                'tgl_terbit' => $request->tgl_terbit,
-                'filename' => $fileName,
-                'filepath' => '/storage/' . $filePath
-            ]);
-        } else {
-            // Simpan informasi buku tanpa thumbnail jika tidak ada thumbnail yang diunggah
-            Buku::create([
-                'judul' => $request->judul,
-                'penulis' => $request->penulis,
-                'harga' => $request->harga,
-                'tgl_terbit' => $request->tgl_terbit,
-            ]);
         }
+    
+        // Simpan informasi buku ke database
+        $buku = Buku::create([
+            'judul' => $request->judul,
+            'penulis' => $request->penulis,
+            'harga' => $request->harga,
+            'tgl_terbit' => $request->tgl_terbit,
+            'filename' => $fileName ?? null,
+            'filepath' => isset($fileName) ? '/storage/' . $filePath : null
+            
+        ]);
 
+        if ($request->file('gallery')) {
+            foreach($request->file('gallery') as $key => $file) {
+                $fileName = time().'_'.$file->getClientOriginalName();
+                $filePath = $file->storeAs('uploads', $fileName, 'public');
+
+                $gallery = Gallery::create([
+                    'nama_galeri'   => $fileName,
+                    'path'          => '/storage/' . $filePath,
+                    'foto'          => $fileName,
+                    'buku_id'       => $buku->id
+                ]);
+            }
+        } 
+
+        //-----------------------------------------------------------------------------------------------------------------------------------------------------------
         //$buku = new Buku;
         //$buku->judul = $request->judul;
         //$buku->penulis = $request->penulis;
@@ -82,8 +90,11 @@ class BukuController extends Controller
         //$buku->tgl_terbit = $request->tgl_terbit;
         //$buku->save();
         //return redirect('/buku');
+        //-----------------------------------------------------------------------------------------------------------------------------------------------------------
+
         return redirect('/buku')->with('succes-simpan', 'Data buku berhasil disimpan.');
 
+       //----------------------------------------------------------------------------------------------------------------------------------------------------------- 
        // Buku::create([
        //     'judul' => $request->judul,
        //     'penulis' => $request->penulis,
@@ -92,6 +103,7 @@ class BukuController extends Controller
        //     save()
        // ]);
        // return redirect('/buku');
+       //-----------------------------------------------------------------------------------------------------------------------------------------------------------
     }
 
     public function edit($id) {
@@ -110,20 +122,42 @@ class BukuController extends Controller
             'gallery.*' => 'image|mimes:jpeg,jpg,png|max:2048',
         ]);
 
-        $fileName = time().'_'.$request->thumbnail->getClientOriginalName();
-        $filePath = $request->file('thumbnail')->storeAs('uploads', $fileName, 'public');
+        //-----------------------------------------------------------------------------------------------------------------------------------------------------------
+        //$fileName = time().'_'.$request->thumbnail->getClientOriginalName();
+        //$filePath = $request->file('thumbnail')->storeAs('uploads', $fileName, 'public');
 
-        Image::make(storage_path().'/app/public/uploads/'.$fileName)
-            ->fit(240,320)
-            ->save();
+        //Image::make(storage_path().'/app/public/uploads/'.$fileName)
+        //    ->fit(240,320)
+        //    ->save();
+        //-----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+        // Cek apakah thumbnail baru diunggah
+        if ($request->hasFile('thumbnail')) {
+            $fileName = time().'_'.$request->thumbnail->getClientOriginalName();
+            $filePath = $request->file('thumbnail')->storeAs('uploads', $fileName, 'public');
+
+            Image::make(storage_path().'/app/public/uploads/'.$fileName)
+                ->fit(240,400)
+                ->save();
+
+            // Perbarui informasi buku dengan thumbnail baru
+            $buku->update([
+                'filename' => $fileName,
+                'filepath' => '/storage/' . $filePath
+            ]);
+        } elseif ($request->input('current_thumbnail')) {
+            // Jika tidak ada thumbnail baru, gunakan thumbnail saat ini
+            $buku->update([
+                'filename' => $request->input('current_thumbnail'),
+                'filepath' => '/storage/uploads/' . $request->input('current_thumbnail'),
+            ]);
+        }
 
         $buku->update([
             'judul' => $request->judul,
             'penulis' => $request->penulis,
             'harga' => $request->harga,
             'tgl_terbit' => $request->tgl_terbit,
-            'filename' => $fileName,
-            'filepath' => '/storage/' . $filePath
         ]);
 
         if ($request->file('gallery')) {
@@ -139,8 +173,8 @@ class BukuController extends Controller
                 ]);
             }
         }
-        
 
+        
         return redirect('/buku')->withErrors(['gallery' => 'Gagal mengunggah file galeri.'])->with('succes-perbarui', 'Data buku berhasil diperbarui.');
 
     }
@@ -154,5 +188,17 @@ class BukuController extends Controller
 
     public function _construct() {
         $this->middleware('auth');        
+    }
+
+    public function galbuku($title) {
+        $bukus = Buku::where('buku_seo', $title)->first();
+        $galeris = $bukus->photos()->orderBy('id', 'desc')->paginate(6);
+        return view('galeri-buku', compact('$bukus', 'galeris'));
+    }
+
+    public function deletegallery($id) {
+        $gallery = Gallery::find($id);
+        $gallery->delete();
+        return redirect()->back();
     }
 }

@@ -21,6 +21,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/detail-buku/{title}',[BukuController::class, 'galbuku'])->name('galeri.buku');
+
+
 //Route::get('/dashboard', function () {
   //  return view('dashboard');
 //})->middleware(['auth', 'verified'])->name('dashboard');
@@ -40,7 +43,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/buku',[BukuController::class,'index'])->name('buku.index');
     Route::get('/dashboard', function () {return redirect()->route('buku.index');})->name('dashboard');
     Route::get('/buku/search', [BukuController::class, 'search'])->name('buku.search');
-
+  
 });
 
 Route::middleware([Admin::class])->group(function () {
@@ -50,6 +53,8 @@ Route::middleware([Admin::class])->group(function () {
   Route::get('/buku/create',[BukuController::class, 'create'])->name('buku.create');
   Route::post('/buku',[BukuController::class, 'store'])->name('buku.store');
   Route::post('/buku/update/{id}',[BukuController::class, 'update'])->name('buku.update');
+  Route::get('/gallery/delete/{id}', [BukuController::class, 'deletegallery'])->name('buku.deletegallery');
+
 
 });
 

@@ -33,8 +33,14 @@
             <div class="form-group">
                 <label for="thumbnail">Thumbnail:</label>
                 <br>
-                <input type="file" name="thumbnail" id="thumbnail" >
+                <input type="file" name="thumbnail" id="thumbnail">
             </div>
+            
+            @if ($buku->filename)
+                <p>Thumbnail Saat Ini:</p>
+                <img src="{{ asset('/storage/uploads/' . $buku->filename) }}" alt="Current Thumbnail" width="150">
+                <input type="hidden" name="current_thumbnail" value="{{ $buku->filename }}">
+            @endif
 
             <div class="form-group">
                 <label for="gallery">Gallery:</label>
@@ -59,8 +65,10 @@
                         class="rounded-full object-cover object-center"
                         src="{{ asset($gallery->path) }}"
                         alt=""
-                        width="300"
-                        />
+                        width="300">
+                        <div class="mt-2">
+                            <a href="{{ route('buku.deletegallery', $gallery->id) }}" class="btn btn-danger rounded-0">Hapus</a>
+                        </div>
                     </div>
                 @endforeach
             </div>

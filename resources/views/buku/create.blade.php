@@ -41,6 +41,25 @@
                     <label for="thumbnail">Thumbnail:</label>
                     <br>
                     <input type="file" name="thumbnail" id="thumbnail" >
+                </div> 
+
+                <div class="form-group">
+                    <label for="gallery">Gallery:</label>
+                    <br>
+                    <input type="file" name="gallery[]" id="gallery" >
+                </div>
+                
+                <div class="form-group">
+                    <div class="mt-2" id="fileinput_wrapper">
+                    </div>
+                    <a href="javascript:void(0);" id="tambah" onclick="addFileInput()">Tambah Gallery</a>
+                    
+                    <script type="text/javascript">
+                        function addFileInput () {
+                            var div = document.getElementById('fileinput_wrapper');
+                            div.innerHTML += '<input type="file" name="gallery[]" id="gallery" class="block w-full mb-5" style="margin-bottom:5px;">';
+                        };
+                    </script>
                 </div>
                 
                 <div class="button-group">
