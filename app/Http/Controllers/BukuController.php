@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Gallery;
 use Illuminate\Http\Request;
 use App\Models\Buku;
+use Illuminate\Support\Facades\Auth;
 use Image;
 class BukuController extends Controller
 {
@@ -19,6 +20,9 @@ class BukuController extends Controller
         $totalHarga = Buku::sum('harga');
         $data_buku = Buku::orderBy('id', 'desc')->paginate($batas);
         $nomor = $batas * ($data_buku->currentPage()-1);
+        if(!Auth::check()) {
+            return view('buku.daftarbuku', compact('data_buku','no','nomor','jumlahData','totalHarga'));
+        }
         return view('dashboard', compact('data_buku','no','nomor','jumlahData','totalHarga'));
     }
 
@@ -64,7 +68,7 @@ class BukuController extends Controller
             'harga' => $request->harga,
             'tgl_terbit' => $request->tgl_terbit,
             'filename' => $fileName ?? null,
-            'filepath' => isset($fileName) ? '/storage/' . $filePath : null
+            'filepath' => asset($fileName) ? '/storage/' . $filePath : null
             
         ]);
 
@@ -190,15 +194,21 @@ class BukuController extends Controller
         $this->middleware('auth');        
     }
 
-    public function galbuku($title) {
-        $bukus = Buku::where('buku_seo', $title)->first();
-        $galeris = $bukus->photos()->orderBy('id', 'desc')->paginate(6);
-        return view('galeri-buku', compact('$bukus', 'galeris'));
-    }
+    //public function galbuku($title) {
+    //    $bukus = Buku::where('buku_seo', $title)->first();
+    //    $galeris = $bukus->photos()->orderBy('id', 'desc')->paginate(6);
+    //    return view('galeri-buku', compact('$bukus', 'galeris'));
+    //}
 
     public function deletegallery($id) {
         $gallery = Gallery::find($id);
         $gallery->delete();
         return redirect()->back();
+    }
+
+    public function galbuku($id)
+    {
+        $buku = Buku::find($id);
+        return view('buku.detail', compact('buku'));
     }
 }

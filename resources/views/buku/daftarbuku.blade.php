@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cheltenham:wght@400;700&display=swap">
-    <title>Latihan Pertemuan 6</title>
+    <title>Latihan Pertemuan</title>
     <style>
         *{
             font-family: 'Cheltenham', sans-serif;
@@ -81,6 +81,23 @@
     @elseif(Session::has('succes-hapus'))
         <div class="alert alert-success text-center mt-3">{{ Session::get('succes-hapus') }}</div>
     @endif
+
+    <div class="d-flex justify-content-between navbar navbar-expand-lg bg-white py-3 px-5 mb-5">
+        <div class="col-auto ms-5">
+            <p class="fs-3 m-0">Buku</p>
+        </div>
+        <div class="col-auto me-5">
+            @auth
+                <a href="{{ url('/dashboard') }}" class="btn btn-light border">Dashboard</a>
+            @else
+                <a href="{{ route('login') }}" class="btn btn-light border me-2">Log in</a>
+
+                @if (Route::has('register'))
+                    <a href="{{ route('register') }}" class="btn btn-light border">Register</a>
+                @endif
+            @endauth
+        </div>
+    </div>
     <div class="container mt-4">
         <h1 class="text-center">Data Buku</h1>
         <form action="{{ route('buku.search') }}" method="get">@csrf
@@ -121,28 +138,23 @@
                         <td>{{ $buku->penulis }}</td>
                         <td>{{ number_format($buku->harga, 0, ',', '.') }}</td>
                         <td>{{ $buku->tgl_terbit->format('d/m/Y') }}</td>
-                        
                         <td>
-                            @if(Auth::check() && Auth::user()->level == 'admin')
-                            <form method="put" action="{{ route('buku.edit', $buku->id) }}" style="display: inline;">
-                                @csrf
-                                <button type="submit" class="btn btn-primary">Update</button>
-                            </form>
-                            <br>
-                            <br>
-                            <form action="{{ route('buku.destroy', $buku->id) }}" method="post" style="display: inline;">
-                                @csrf
-                                <button onClick="return confirm('Yakin mau dihapus?')" class="btn btn-danger">Hapus</button>
-                            </form>
-                            <br>
-                            <br>
-                            @endif
-                            <form action="{{ route('galeri.buku', $buku->id) }}" style="display: inline;">
-                                @csrf
-                                <button class="btn btn-warning">Lihat </button>
-                            </form>
+                            <div class="d-flex justify-content-center">
+                                @if (Auth::check() && Auth::user()->level == 'admin')
+                                    <form method="put" action="{{ route('buku.edit', $buku->id) }}" style="display: inline;">
+                                        @csrf
+                                        <button type="submit" class="btn btn-primary">Update</button>
+                                    </form>
+                                    <br>
+                                    <br>
+                                    <form action="{{ route('buku.destroy', $buku->id) }}" method="post" style="display: inline;">
+                                        @csrf
+                                        <button onClick="return confirm('Yakin mau dihapus?')" class="btn btn-danger">Hapus</button>
+                                    </form>
+                                @endif
+                                <a href="{{ route('galeri.buku', $buku->id) }}" class="btn btn-warning">Lihat</a>
+                            </div>
                         </td>
-                        
                         
                     </tr>
                 @endforeach
