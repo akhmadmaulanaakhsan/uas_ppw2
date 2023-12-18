@@ -84,7 +84,7 @@
 
     <div class="d-flex justify-content-between navbar navbar-expand-lg bg-white py-3 px-5 mb-5">
         <div class="col-auto ms-5">
-            <p class="fs-3 m-0">Buku</p>
+            <p class="fs-3 m-0">Buku Perpustakaan</p>
         </div>
         <div class="col-auto me-5">
             @auth

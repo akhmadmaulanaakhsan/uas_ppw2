@@ -4,7 +4,7 @@
 
 @section('content')
     <div class="text-center mt-5">
-        <h2 class="mb-4">Detail Buku</h2>
+        <h2 class="mb-4 weight-bold">Detail Buku</h2>
     </div>
 
     <div class="container mt-3">
@@ -28,13 +28,25 @@
                             <th>Harga</th>
                             <td>{{ $buku->harga }}</td>
                         </tr>
+                        <tr>
+                            <th>Rating</th>
+                            <td>
+                                <p>
+                                    @if($buku->ratings->count() > 0)
+                                        Average Rating: {{ number_format($buku->ratings->avg('rating'), 2) }}
+                                    @else
+                                        Rating is not available.
+                                    @endif
+                                </p>
+                            </td>
+                        </tr>
                     </table>
                 </div>
             </div>
         </div>
 
         <div class="text-left mt-3">
-            <h4 class="mb-4">Gallery Buku:</h4>
+            <h4 class="mb-2">Gallery Buku:</h4>
         </div>
 
         <div class="row">
@@ -48,8 +60,40 @@
             @endforeach
         </div>
 
-        <div class="text-center mt-2">
-            <a href="{{ route('buku.index') }}" class="btn btn-warning">Kembali</a>
+
+        <!-- Added rating form -->
+        <div class="text-left mt-3">
+            <h4 class="mb-2">Rating:</h4>
+            @auth
+                <form action="{{ route('buku.rate', $buku->id) }}" method="post">
+                    @csrf
+                    <label for="rating">Rate this book:</label>
+                    <select name="rating" id="rating" required>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                    <button type="submit" class="btn btn" style="background-color: #d2b55b;">Submit Rating</button>
+                </form>
+            @else
+                <p>Login untuk dapat memberi rate pada buku.</p>
+            @endauth
+        </div>
+        <!-- End of rating form -->
+
+        <div class="d-flex justify-content-end mt-2 mb-4">
+            <a href="{{ route('buku.index') }}" class="btn btn-warning mr-3">Kembali</a>
+
+            @auth
+                <form action="{{ route('buku.addToFavourites', $buku->id) }}" method="post" style="margin-left: 12px;">
+                @csrf
+                    <button type="submit" class="btn btn-warning">Simpan ke Daftar Favorit</button>
+                </form>
+                @else
+                    <p style="margin-left: 12px;">Login untuk menyimpan ke daftar favorit.</p>
+            @endauth
         </div>
     </div>
 

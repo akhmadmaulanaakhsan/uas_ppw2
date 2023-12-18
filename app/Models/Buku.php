@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Buku extends Model
 {
@@ -20,6 +21,16 @@ class Buku extends Model
 
     public function photos() {
         return $this->hasMany('App\Models\Buku', 'id_buku', 'id');
+    }
+
+    public function ratings(): HasMany
+    {
+        return $this->hasMany(Rating::class);
+    }
+
+    public function favourites(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'favourites')->withTimestamps();
     }
 
 }

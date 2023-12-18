@@ -7,6 +7,10 @@ use Illuminate\Http\Request;
 use App\Models\Buku;
 use Illuminate\Support\Facades\Auth;
 use Image;
+use App\Models\Rating;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use App\Models\User;
+use App\Models\Favourite;
 class BukuController extends Controller
 {
     
@@ -211,4 +215,53 @@ class BukuController extends Controller
         $buku = Buku::find($id);
         return view('buku.detail', compact('buku'));
     }
+
+    public function rate(Request $request, $id)
+    {
+        $request->validate([
+            'rating' => 'required|in:1,2,3,4,5',
+        ]);
+        
+        $user = auth()->user();
+        
+        // Cek apakah user sudah memberikan rating
+        $existingRating = Rating::where('user_id', $user->id)
+            ->where('buku_id', $id)
+            ->first();
+
+        if ($existingRating) {
+            // Jika sudah, update rating
+            $existingRating->update(['rating' => $request->rating]);
+        } else {
+            // Jika belum, buat rating baru
+            Rating::create([
+                'user_id' => $user->id,
+                'buku_id' => $id,
+                'rating' => $request->rating,
+            ]);
+        }
+
+        return redirect()->back()->with('success', 'Rating berhasil disimpan');
+    }
+
+    public function addToFavourites($id)
+    {
+        $user = Auth::user();
+        $buku = Buku::findOrFail($id);
+
+        $user->favourites()->syncWithoutDetaching([$buku->id]);
+
+        return redirect()->back()->with('success', 'Buku berhasil ditambahkan ke daftar favorit.');
+    }
+
+    public function myFavourites()
+    {
+        $user = Auth::user();
+        $favourites = $user->favourites()->get();
+
+        return view('buku.myfavourites', compact('favourites'));
+    }
+
+
+    
 }

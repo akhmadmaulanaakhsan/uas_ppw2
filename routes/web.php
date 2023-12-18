@@ -48,7 +48,11 @@ Route::middleware('auth')->group(function () {
     //Route::get('/buku',[BukuController::class,'index'])->name('buku.index');
     //Route::get('/dashboard', function () {return redirect()->route('buku.index');})->name('dashboard');
     Route::get('/buku/search', [BukuController::class, 'search'])->name('buku.search');
-  
+    Route::post('/buku/rate/{id}', [BukuController::class, 'rate'])->name('buku.rate');
+    Route::post('/buku/add-to-favourites/{id}', [BukuController::class, 'addToFavourites'])->name('buku.addToFavourites');
+    Route::get('/buku/myfavourites', [BukuController::class, 'myFavourites'])->name('buku.myFavourites');
+
+
 });
 
 require __DIR__.'/auth.php';
