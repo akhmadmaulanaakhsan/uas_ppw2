@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\BukuController;
 use App\Http\Middleware\Admin;
+use App\Http\Controllers\KategoriBukuController;
 
 /*
 |--------------------------------------------------------------------------
@@ -51,8 +52,11 @@ Route::middleware('auth')->group(function () {
     Route::post('/buku/rate/{id}', [BukuController::class, 'rate'])->name('buku.rate');
     Route::post('/buku/add-to-favourites/{id}', [BukuController::class, 'addToFavourites'])->name('buku.addToFavourites');
     Route::get('/buku/myfavourites', [BukuController::class, 'myFavourites'])->name('buku.myFavourites');
+    // Add a new route for the Buku Populer page
 
-
+    
+    Route::get('/buku/kategori', [KategoriBukuController::class, 'kategori'])->name('buku.kategori');
+ 
 });
 
 require __DIR__.'/auth.php';
@@ -60,7 +64,7 @@ require __DIR__.'/auth.php';
 //Route::get('/buku', [BukuController::class, 'index'])->name('buku.index');
 Route::get('/detail-buku/{id}', [BukuController::class, 'galbuku'])->name('galeri.buku');
 Route::get('/buku/search', [BukuController::class, 'search'])->name('buku.search');
-
+Route::get('/buku-populer', [BukuController::class, 'bukuPopuler'])->name('buku.buku-populer');
 
 Route::middleware([Admin::class])->group(function () {
   Route::post('/buku/delete/{id}',[BukuController::class, 'destroy'])->name('buku.destroy');
@@ -70,6 +74,10 @@ Route::middleware([Admin::class])->group(function () {
   Route::post('/buku/store',[BukuController::class, 'store'])->name('buku.store');
   Route::post('/buku/update/{id}',[BukuController::class, 'update'])->name('buku.update');
   Route::get('/gallery/delete/{id}', [BukuController::class, 'deletegallery'])->name('buku.deletegallery');
+  //Route::get('/create', [KategoriBukuController::class, 'create'])->name('kategori.create');
+  Route::post('/store', [KategoriBukuController::class, 'store'])->name('kategori.store');
+  Route::get('/buku/create-kategori', [KategoriBukuController::class, 'create'])->name('buku.create-kategori');
+
 
 
 });

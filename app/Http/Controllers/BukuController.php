@@ -262,6 +262,16 @@ class BukuController extends Controller
         return view('buku.myfavourites', compact('favourites'));
     }
 
+    public function bukuPopuler()
+    {
+        $populerBooks = Buku::withAvg('ratings', 'rating')
+            ->orderByDesc('ratings_avg_rating')  //memngatur dari rating tertinggi ke terkecil
+            ->take(10)
+            ->get();
+
+        return view('buku.buku-populer', compact('populerBooks'));
+    }
+
 
     
 }

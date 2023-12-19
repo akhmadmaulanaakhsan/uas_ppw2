@@ -21,6 +21,16 @@
                         {{ __('Favorite') }}
                     </x-nav-link>
                 </div>
+                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                    <x-nav-link :href="route('buku.buku-populer')" :active="request()->routeIs('buku.buku-populer')">
+                        {{ __('Populer') }}
+                    </x-nav-link>
+                </div>
+                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                    <x-nav-link :href="route('buku.kategori')" :active="request()->routeIs('buku.kategori')">
+                        {{ __('Kategori Buku') }}
+                    </x-nav-link>
+                </div>
             </div>
 
             <!-- Settings Dropdown -->

@@ -87,6 +87,7 @@
             <p class="fs-3 m-0">Buku Perpustakaan</p>
         </div>
         <div class="col-auto me-5">
+            <a href="{{ route('buku.buku-populer') }}" class="btn btn-light border me-2">Buku Populer</a>
             @auth
                 <a href="{{ url('/dashboard') }}" class="btn btn-light border">Dashboard</a>
             @else
